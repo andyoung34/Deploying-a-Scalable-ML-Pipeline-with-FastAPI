@@ -4,6 +4,7 @@ from ml.data import process_data
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, f1_score
 
+
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
     model = RandomForestClassifier(random_state=42)
@@ -44,26 +45,20 @@ def save_model(model, path):
         pickle.dump(model, f)
     pass
 
+
 def load_model(path):
     with open(path, "rb") as f:
         return pickle.load(f)
     pass
 
+
 def performance_on_categorical_slice(
-    data,
-    column_name,
-    slice_value,
-    categorical_features,
-    label,
-    encoder,
-    lb,
-    model
+    data, column_name, slice_value, categorical_features, label, encoder, lb, model
 ):
 
     slice_df = data[data[column_name] == slice_value]
     if slice_df.empty:
         return None, None, None
-
 
     X_slice, y_slice, _, _ = process_data(
         slice_df,
@@ -71,9 +66,9 @@ def performance_on_categorical_slice(
         label=label,
         training=False,
         encoder=encoder,
-        lb=lb
+        lb=lb,
     )
-    
+
     preds = inference(model, X_slice)
     precision = precision_score(y_slice, preds, zero_division=1)
     recall = recall_score(y_slice, preds, zero_division=1)
